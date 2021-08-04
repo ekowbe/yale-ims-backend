@@ -5,15 +5,17 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Sport.destroy_all
-College.destroy_all
+
+
 Team.destroy_all
+College.destroy_all
+Sport.destroy_all
 
 # create sports. basketball for now
 sports = [
     {
         name: "Basketball",
-        description: "There are three levels, A, B, and C. Players can test out which level is right for them at the beginning of the season, but must have chosen a level by January. Overtime possession determined by a coin flip."
+        description: "There are three levels, A, B, and C. Players can test out which level is right for them at the beginning of the season, but must have chosen a level by January. Overtime possession determined by a coin flip.",
         location: "Lanman Center"
     }
 ]
@@ -21,6 +23,7 @@ sports = [
 Sport.create(sports)
 
 # create colleges
+count = 0 
 college_names = ["Benjamin Franklin", "Berkeley", "Branford", "Davenport", "Ezra Stiles", "Grace Hopper", "Jonathan Edwards", "Morse", "Pauli Murray", "Pierson", "Saybrook", "Silliman", "Timothy Dwight", "Trumbull"]
 college_names.each do |name|
     college = College.new(name: name)
@@ -29,11 +32,20 @@ college_names.each do |name|
 end
 
 # create teams
+# assumption: every college has a team for each sport
 College.all.each do |c|
     team = Team.new
     team.college = c # for now
     team.name = c.name
     team.description = Faker::Lorem.paragraph # i will take the descriptions from the intramural websites
-
+    team.sport = Sport.find_by(name: "Basketball")
     team.save  
 end
+
+# create matches
+
+
+
+
+
+
