@@ -24,12 +24,15 @@ def create_matches(upcoming, num_matches, sport)
 
         if upcoming
             match.date_time = (Time.now+rand(11000000))
+            match.is_completed = 0
         else
             match.date_time = (Time.now-rand(11000000))
+            match.is_completed = 1
         end
 
         match.date_time = match.format_date_time.to_datetime
-        match.is_completed = 0
+        
+        
     
         # create two match_teams
         num_match_teams = 2
@@ -58,8 +61,6 @@ def create_match_teams(n, match, sport)
     end
 end
 
-# TO DO: a function that goes through all matches and compares with current date to check if match is completed
-
 # ---- SEEDED DATA ---- #
 
 # create sports. basketball for now
@@ -82,7 +83,7 @@ college_names.each do |name|
     count += 1
 end
 
-# create teams
+# create basketball teams
 # assumption: every college has a team for each sport
 College.all.each do |c|
     team = Team.new
