@@ -61,14 +61,33 @@ def create_match_teams(n, match, sport)
     end
 end
 
+# creates the teams
+# assumption: every college has a team for each sport
+def create_teams_for_sport(sport)
+    College.all.each do |c|
+        team = Team.new
+        team.college = c # for now
+        team.name = c.name
+        team.description = sport.description
+        team.sport = sport
+        team.save  
+    end 
+end
+
 # ---- SEEDED DATA ---- #
 
-# create sports. basketball for now
+# create sports.
 sports = [
     {
         name: "Basketball",
         description: "There are three levels, A, B, and C. Players can test out which level is right for them at the beginning of the season, but must have chosen a level by January. Overtime possession determined by a coin flip.",
         location: "Lanman Center"
+    },
+    {
+        name: "Pickleball",
+        description: "Players volley until a fault, winner will get the option of serving
+        first.",
+        location: "5th floor H or K"
     }
 ]
 
@@ -85,21 +104,15 @@ end
 
 # create basketball teams
 # assumption: every college has a team for each sport
-College.all.each do |c|
-    team = Team.new
-    team.college = c # for now
-    team.name = c.name
-    team.description = Faker::Lorem.paragraph # i will take the descriptions from the intramural websites
-    team.sport = Sport.find_by(name: "Basketball")
-    team.save  
-end
+basketball = Sport.find_by(name:"Basketball")
+create_teams_for_sport(basketball)
+
 
 # create upcoming matches for basketball
-basketball_id = Sport.find_by(name:"Basketball")
-create_matches(upcoming=true, 30, basketball_id)
+create_matches(upcoming=true, 30, basketball)
 
 # create past matches for basketball
-create_matches(upcoming=false, 30, basketball_id)
+create_matches(upcoming=false, 30, basketball)
 
 
 

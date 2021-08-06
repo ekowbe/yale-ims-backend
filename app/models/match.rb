@@ -9,13 +9,13 @@ class Match < ApplicationRecord
     end
 
     # TO DO: a function that goes through all matches and compares with current date to check if match is completed
-    def self.update_match_completion_status()
+    def self.update_match_completion_status
         matches = Match.all
-        matches.each |match| do
+        matches.each { |match| 
             if match.date_time < DateTime.current.to_date
                 match.is_completed = 1
             end
-        end
+        }
     end
 
 end
