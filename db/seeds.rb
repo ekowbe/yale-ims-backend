@@ -9,10 +9,11 @@
 # ---- DESTROYERS ---- #
 MatchTeam.destroy_all
 Match.destroy_all
+Player.destroy_all
 Team.destroy_all
 College.destroy_all
 Sport.destroy_all
-Player.destroy_all
+
 
 # ---- HELPER FUNCTIONS ---- #
 
@@ -22,7 +23,6 @@ def create_matches(upcoming, num_matches, sport)
         # create a new match
         match = Match.new
         
-
         if upcoming
             match.date_time = (Time.now+rand(11000000))
             match.is_completed = 0
@@ -33,8 +33,6 @@ def create_matches(upcoming, num_matches, sport)
 
         match.date_time = match.format_date_time.to_datetime
         
-        
-    
         # create two match_teams
         num_match_teams = 2
 
@@ -57,9 +55,25 @@ def create_match_teams(n, match, sport)
         match_team = MatchTeam.new
         match_team.match = match
         match_team.team = t
-        match_team.score = 0
+        match_team.is_winner = 0
+
+        # if match has been played, give it a random score
+        if match.is_completed
+            match_team.score = rand(50)
+        end
+        
         match_team.save
     end
+
+    # traverse match_teams and assign winners
+    if match.is_completed
+        match_teams_for_current_match = MatchTeam.all.select{|mt| mt.match == match}
+        winner = match_teams_for_current_match.max{ |match_team_1, match_team_2| match_team_1.score <=> match_team_2.score}
+        winner.update(is_winner: 1)
+    end
+
+
+  
 end
 
 # creates the teams
