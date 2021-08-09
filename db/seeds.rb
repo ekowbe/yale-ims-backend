@@ -12,6 +12,7 @@ Match.destroy_all
 Team.destroy_all
 College.destroy_all
 Sport.destroy_all
+Player.destroy_all
 
 # ---- HELPER FUNCTIONS ---- #
 
@@ -63,15 +64,34 @@ end
 
 # creates the teams
 # assumption: every college has a team for each sport
-def create_teams_for_sport(sport)
+def create_teams_for_sport(sport, num_players)
+    current_year = Time.new.year
+    classes = (current_year..current_year+4).to_a # for the players
+
     College.all.each do |c|
         team = Team.new
         team.college = c # for now
         team.name = c.name
         team.description = sport.description
         team.sport = sport
+
+        # players
+        create_players(team, classes, num_players)
         team.save  
     end 
+end
+
+# creates players for each team
+
+def create_players(team, classes, num_players)
+    num_players.times do
+        player = Player.new
+        player.first_name = Faker::Name.first_name 
+        player.last_name = Faker::Name.last_name 
+        player.team = team
+        player.class_of = classes.sample
+        player.save
+    end
 end
 
 # ---- SEEDED DATA ---- #
@@ -105,14 +125,17 @@ end
 # create basketball teams
 # assumption: every college has a team for each sport
 basketball = Sport.find_by(name:"Basketball")
-create_teams_for_sport(basketball)
-
+num_players = 10
+create_teams_for_sport(basketball, num_players)
 
 # create upcoming matches for basketball
 create_matches(upcoming=true, 30, basketball)
 
 # create past matches for basketball
 create_matches(upcoming=false, 30, basketball)
+
+
+
 
 
 
