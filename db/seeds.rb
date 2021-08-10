@@ -148,6 +148,18 @@ create_matches(upcoming=true, 30, basketball)
 # create past matches for basketball
 create_matches(upcoming=false, 30, basketball)
 
+# create pickleball teams
+# assumption: every college has a team for each sport
+pickleball = Sport.find_by(name:"Pickleball")
+num_players = 15
+create_teams_for_sport(pickleball, num_players)
+
+# create upcoming matches for basketball
+create_matches(upcoming=true, 30, pickleball)
+
+# create past matches for basketball
+create_matches(upcoming=false, 30, pickleball)
+
 
 
 
