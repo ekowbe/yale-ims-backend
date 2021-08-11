@@ -108,6 +108,23 @@ def create_players(team, classes, num_players)
     end
 end
 
+# attaches pictures for each sport
+
+# def attach_pictures_to_sport(sport, num_pics)
+#     count = 1
+#     num_pics.times do 
+#         sport.images.attach(
+#             io: File.open("../yale-ims-frontend/src/sport-images/#{sport.name}/#{count}.jpg"),
+#             filename: "#{count}.jpg",
+#             content_type: 'application/png',
+#             identify: false
+#         )
+
+#         sport.save
+#         count += 1
+#     end
+# end
+
 # ---- SEEDED DATA ---- #
 
 # create sports.
@@ -122,6 +139,24 @@ sports = [
         description: "Players volley until a fault, winner will get the option of serving
         first.",
         location: "5th floor H or K"
+    },
+    {
+        name: "Water Polo",
+        description: "You can only touch the ball with one hand at a time. You can flip
+        other players out of their tubes when one of you has the ball. You
+        cannot play when you are out of your tube.",
+        location: "PWG 3rd Floor Pool"
+    },
+    {
+        name: "Dodgeball",
+        description: "A team cannot possess all 6 balls for more than 5 seconds. If held
+        for more than 5 seconds, 3 shall be returned to the other team.
+        No head shots. Ball can be used to block as long as blocking ball is
+        not dropped. Ball is live until it hits floor, ceiling, backboard/net,
+        or walls. If ball is caught, thrower is out and player who has been
+        out the longest on catching team returns.",
+        location: "Room K, 5th floor
+        of PWG"
     }
 ]
 
@@ -132,6 +167,14 @@ count = 0
 college_names = ["Benjamin Franklin", "Berkeley", "Branford", "Davenport", "Ezra Stiles", "Grace Hopper", "Jonathan Edwards", "Morse", "Pauli Murray", "Pierson", "Saybrook", "Silliman", "Timothy Dwight", "Trumbull"]
 college_names.each do |name|
     college = College.new(name: name)
+
+    college.shield.attach(
+        io: File.open("app/assets/images/yale-crests/shield_#{count}.png"),
+        filename: "shield_#{count}.png",
+        content_type: 'application/png',
+        identify: false
+    )
+
     college.save
     count += 1
 end
@@ -159,6 +202,11 @@ create_matches(upcoming=true, 30, pickleball)
 
 # create past matches for basketball
 create_matches(upcoming=false, 30, pickleball)
+
+# save images to basketball model
+# attach_pictures_to_sport(basketball, 10)
+
+
 
 
 
